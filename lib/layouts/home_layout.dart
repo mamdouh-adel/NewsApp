@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/app_cubit/app_cubit.dart';
 import 'package:news_app/layouts/cubit/cubit.dart';
 import 'package:news_app/layouts/cubit/states.dart';
 import 'package:news_app/shared/components/components.dart';
@@ -18,13 +19,22 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = NewsCubit.get(context);
+          var appCubit = AppCubit.get(context);
           return Scaffold(
             appBar: AppBar(
               title: const Text(
                 "News App",
               ),
               actions: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.search),
+                ),
+                IconButton(
+                    onPressed: () {
+                      appCubit.changeAppThemeMode();
+                    },
+                    icon: const Icon(Icons.brightness_4_outlined)),
               ],
             ),
             body: cubit.getCurrentScreen(),

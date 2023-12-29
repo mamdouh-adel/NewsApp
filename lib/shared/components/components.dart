@@ -59,10 +59,6 @@ Widget buildNewsItem(Map<String, dynamic> newsItem) {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
-                  ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
