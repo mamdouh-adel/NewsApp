@@ -10,7 +10,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewsCubit(),
+      create: (context) => NewsCubit()
+        ..getBusinessData()
+        ..getSportsData()
+        ..getScienceData(),
       child: BlocConsumer<NewsCubit, NewsState>(
         listener: (context, state) {},
         builder: (context, state) {

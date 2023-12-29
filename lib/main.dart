@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/layouts/home_layout.dart';
 import 'package:news_app/shared/bloc_observer.dart';
+import 'package:news_app/shared/network/remote/dio_helper.dart';
 
 void main() {
   Bloc.observer = MyBlocObserver();
+  DioHelper.init();
   runApp(const MyApp());
 }
 
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'News App',
       theme: ThemeData(
+          primarySwatch: Colors.deepOrange,
           scaffoldBackgroundColor: Colors.white,
           useMaterial3: true,
           appBarTheme: const AppBarTheme(
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
             titleTextStyle: TextStyle(
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange)
               .copyWith(background: Colors.grey),
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
               selectedIconTheme: IconThemeData(size: 30.0),
