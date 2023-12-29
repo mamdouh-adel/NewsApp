@@ -7,22 +7,30 @@ import 'package:news_app/app_cubit/app_cubit.dart';
 import 'package:news_app/app_cubit/app_states.dart';
 import 'package:news_app/layouts/home_layout.dart';
 import 'package:news_app/shared/bloc_observer.dart';
+import 'package:news_app/shared/network/local/cache_helper.dart';
 import 'package:news_app/shared/network/remote/dio_helper.dart';
 
-void main() {
+void main() async {
+  // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
+  WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
-  runApp(const MyApp());
+  await CacheHelper.init();
+  bool? isDarkMode = CacheHelper.getBool("IsDarkMode");
+  runApp(MyApp(isDarkMode ?? false));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isDarkMode;
+  const MyApp(this.isDarkMode, {super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => AppCubit(),
+        create: (context) =>
+            AppCubit()..changeAppThemeMode(isDarkMode: isDarkMode),
         child: BlocConsumer<AppCubit, AppState>(
           listener: (context, state) => {},
           builder: (context, state) {

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/app_cubit/app_states.dart';
+import 'package:news_app/shared/network/local/cache_helper.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppStateInit());
@@ -9,8 +10,15 @@ class AppCubit extends Cubit<AppState> {
   bool _isDarkMode = false;
   bool get isDarkMode => _isDarkMode;
 
-  void changeAppThemeMode() {
-    _isDarkMode = !_isDarkMode;
+  Future changeAppThemeMode({bool? isDarkMode}) async {
+    if (isDarkMode != null) {
+      _isDarkMode = isDarkMode;
+    } else {
+      _isDarkMode = !_isDarkMode;
+    }
+
+    await CacheHelper.setBool("IsDarkMode", _isDarkMode);
+
     emit(_isDarkMode
         ? AppStateChangeThemeModeToDark()
         : AppStateChangeThemeModeToLight());

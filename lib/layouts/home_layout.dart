@@ -31,8 +31,8 @@ class HomeScreen extends StatelessWidget {
                   icon: const Icon(Icons.search),
                 ),
                 IconButton(
-                    onPressed: () {
-                      appCubit.changeAppThemeMode();
+                    onPressed: () async {
+                      await appCubit.changeAppThemeMode();
                     },
                     icon: const Icon(Icons.brightness_4_outlined)),
               ],
