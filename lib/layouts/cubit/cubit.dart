@@ -29,6 +29,9 @@ class NewsCubit extends Cubit<NewsState> {
   List<dynamic> _scienceArticles = [];
   List<dynamic> get scienceArticles => _scienceArticles;
 
+  List<dynamic> _searchArticles = [];
+  List<dynamic> get searchArticles => _searchArticles;
+
   int _currentIndex = 0;
 
   int get currentIndex => _currentIndex;
@@ -91,6 +94,22 @@ class NewsCubit extends Cubit<NewsState> {
         .onError((error, stackTrace) => {
               print("Error Occurred: " + error.toString()),
               emit(NewsErrorWhileLoadingScienceArticlesState(error.toString()))
+            });
+  }
+
+  getSearchData(String value) {
+    emit(NewsOnLoadingSearchArticlesState());
+    DioHelper.getData(url: "v2/everything", queries: {
+      "q": value,
+      "apiKey": "65f7f556ec76449fa7dc7c0069f040ca",
+    })
+        .then((value) => {
+              _searchArticles = value.data["articles"],
+              emit(NewsSuccessLoadedSearchArticlesState())
+            })
+        .onError((error, stackTrace) => {
+              print("Error Occurred: " + error.toString()),
+              emit(NewsErrorWhileLoadingSearchArticlesState(error.toString()))
             });
   }
 }

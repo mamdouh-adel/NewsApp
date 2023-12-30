@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,8 @@ import 'package:news_app/layouts/home_layout.dart';
 import 'package:news_app/shared/bloc_observer.dart';
 import 'package:news_app/shared/network/local/cache_helper.dart';
 import 'package:news_app/shared/network/remote/dio_helper.dart';
+
+import 'layouts/cubit/cubit.dart';
 
 void main() async {
   // بيتأكد ان كل حاجه هنا في الميثود خلصت و بعدين يتفح الابلكيشن
@@ -28,9 +29,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) =>
-            AppCubit()..changeAppThemeMode(isDarkMode: isDarkMode),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                AppCubit()..changeAppThemeMode(isDarkMode: isDarkMode),
+          ),
+          BlocProvider(
+            create: (context) => NewsCubit()
+              ..getBusinessData()
+              ..getSportsData()
+              ..getScienceData(),
+          ),
+        ],
         child: BlocConsumer<AppCubit, AppState>(
           listener: (context, state) => {},
           builder: (context, state) {
@@ -110,6 +121,7 @@ class MyApp extends StatelessWidget {
         bodyMedium: TextStyle(
             fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.white),
       ),
+      iconTheme: const IconThemeData(color: Colors.white),
     );
   }
 }

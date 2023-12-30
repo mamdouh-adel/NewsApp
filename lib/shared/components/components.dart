@@ -107,3 +107,35 @@ Widget listDivider() {
     ),
   );
 }
+
+Widget defaultFormField({
+  required TextEditingController controller,
+  required TextInputType inputType,
+  required String label,
+  required String? Function(String?) validate,
+  required IconData prefix,
+  IconData? suffix,
+  bool isPassword = false,
+  Function(String)? onSubmit,
+  Function()? onTap,
+  Function(String)? onChanged,
+}) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: inputType,
+    validator: validate,
+    obscureText: isPassword,
+    decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: label,
+        prefix: Icon(prefix),
+        suffix: suffix != null ? Icon(suffix) : null),
+    onFieldSubmitted: onSubmit,
+    onTap: onTap,
+    onChanged: onChanged,
+  );
+}
+
+void navigateTo(BuildContext context, Widget toWidget) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => toWidget));
+}

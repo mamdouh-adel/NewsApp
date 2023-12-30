@@ -27,3 +27,11 @@ class NewsErrorWhileLoadingScienceArticlesState extends NewsState {
   final String error;
   NewsErrorWhileLoadingScienceArticlesState(this.error);
 }
+
+class NewsOnLoadingSearchArticlesState extends NewsState {}
+class NewsSuccessLoadedSearchArticlesState extends NewsState {}
+
+class NewsErrorWhileLoadingSearchArticlesState extends NewsState {
+  final String error;
+  NewsErrorWhileLoadingSearchArticlesState(this.error);
+}
