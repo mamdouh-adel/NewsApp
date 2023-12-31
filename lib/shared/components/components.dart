@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/modules/web_view/web_view.dart';
 
 BottomNavigationBarItem buildNavItem({
   required String label,
@@ -27,71 +28,79 @@ List<BottomNavigationBarItem> get buildNavItems => [
       ),
     ];
 
-Widget buildNewsItem(Map<String, dynamic> newsItem) {
+Widget buildNewsItem(BuildContext context, Map<String, dynamic> newsItem) {
   String imgLink = newsItem["urlToImage"] ??
       "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg";
   String publishedAt = newsItem["publishedAt"] ?? "";
   String title = newsItem["title"] ?? "";
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Row(
-      children: [
-        Container(
-          width: 120.0,
-          height: 120.0,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              image: DecorationImage(
-                  image: NetworkImage(
-                    imgLink,
-                  ),
-                  fit: BoxFit.cover)),
-        ),
-        const SizedBox(
-          width: 10.0,
-        ),
-        Expanded(
-          child: SizedBox(
+  String url = newsItem["url"] ?? "";
+  return InkWell(
+    onTap: () {
+      navigateTo(context, WebViewScreen(url: url));
+    },
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 120.0,
             height: 120.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(
-                  height: 22.0,
-                ),
-                Text(
-                  publishedAt,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14.0,
-                  ),
-                )
-              ],
-            ),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      imgLink,
+                    ),
+                    fit: BoxFit.cover)),
           ),
-        )
-      ],
+          const SizedBox(
+            width: 10.0,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 120.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(
+                    height: 22.0,
+                  ),
+                  Text(
+                    publishedAt,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14.0,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     ),
   );
 }
 
-Widget buildNewsList(List<dynamic> items) {
+Widget buildNewsList(List<dynamic> items, {isSearch = false}) {
   return ConditionalBuilder(
       condition: items.isNotEmpty,
       builder: (context) => ListView.separated(
           physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) => buildNewsItem(items[index]),
+          itemBuilder: (context, index) => buildNewsItem(context, items[index]),
           separatorBuilder: (context, index) => listDivider(),
           itemCount: items.length),
-      fallback: (context) => const Center(
-            child: CircularProgressIndicator(),
-          ));
+      fallback: (context) => isSearch
+          ? Container()
+          : const Center(
+              child: CircularProgressIndicator(),
+            ));
 }
 
 Widget listDivider() {

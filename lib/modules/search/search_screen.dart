@@ -38,7 +38,10 @@ class SearchScreen extends StatelessWidget {
                     }),
               ),
               Expanded(
-                child: buildNewsList(newsCubit.searchArticles),
+                child: buildNewsList(
+                  newsCubit.searchArticles,
+                  isSearch: true,
+                ),
               ),
             ],
           ),
